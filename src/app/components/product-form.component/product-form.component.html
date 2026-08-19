@@ -1,0 +1,85 @@
+<div class="modal d-block bg-dark bg-opacity-50" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              {{ productToEdit() ? 'Editar Producto' : 'Nuevo Producto' }}
+            </h5>
+            <button type="button" class="btn-close" (click)="closeModal.emit()"></button>
+          </div>
+
+          <form (submit)="onSubmit($event)">
+            <div class="modal-body">
+              
+              <!-- Título -->
+              <div class="mb-3">
+                <label class="form-label">Título</label>
+                <!-- Acceso a la estructura de la propiedad title -->
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [formField]="productForm.title" 
+                  placeholder="Ej. Teclado Mecánico"
+                />
+                <!-- Para leer banderas como invalid/errors se invoca la propiedad como Signal: .title() -->
+                @if (productForm.title().invalid() && productForm.title().touched()) {
+                  <small class="text-danger d-block mt-1">El título es obligatorio.</small>
+                }
+              </div>
+
+              <!-- Precio -->
+              <div class="mb-3">
+                <label class="form-label">Precio</label>
+                <input 
+                  type="number" 
+                  class="form-control"
+                  [formField]="productForm.price" 
+                />
+                @if (productForm.price().invalid() && productForm.price().touched()) {
+                  <small class="text-danger d-block mt-1">El precio debe ser mayor a 0.</small>
+                }
+              </div>
+
+              <!-- Categoría -->
+              <div class="mb-3">
+                <label class="form-label">Categoría</label>
+                <select class="form-select" [formField]="productForm.category">
+                  <option value="">Selecciona una opción</option>
+                  <option value="electronics">Electrónica</option>
+                  <option value="jewelery">Joyería</option>
+                  <option value="men's clothing">Ropa de Hombre</option>
+                </select>
+              </div>
+
+              <!-- Descripción -->
+              <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea 
+                  class="form-control" 
+                  rows="3"
+                  [formField]="productForm.description"
+                ></textarea>
+              </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                (click)="closeModal.emit()"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-success"
+                [disabled]="productForm().invalid()"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
